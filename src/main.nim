@@ -89,6 +89,7 @@ while window1.open():
         elif $event.key.code == "R":
           timerStart = epochTime()
           isBreak = false
+          ph = 0
           i=0
 
 
