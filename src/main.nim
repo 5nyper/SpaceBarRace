@@ -13,7 +13,7 @@ let
   gO = new_text("                   Game Over!",font)
 
 var
-  i = 0
+  (i,ph) = (0,0)
   isBreak = false
   timerStart: float
   str = new_seq[Rune]()
@@ -78,7 +78,12 @@ while window1.open():
             song.play()
           if epochTime() - timerStart >= 10:
             isBreak = true
-            discard window2.open()
+            if ph < 1:
+              var scores = %*{"username": name,"score": i}
+              var file = open("output.json", fmAppend)
+              write(file, "$1,\n" % [$scores])
+              close(file)
+            ph += 1
             break outer
           i+=1
         elif $event.key.code == "R":
@@ -95,15 +100,7 @@ while window1.open():
     window1.draw text
   window1.display()
 
-var scores = %*{"username": name,"score": i}
-
-echo scores
-
-var file = open("output.json", fmAppend)
-write(file, "$1\n" % [$scores])
-close(file)
-
 let x = readFile("output.json")
 var data = parseJSON(x)
 
-echo data["score"]
+echo data
